@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mini-hellidon-se
+  labels:
+    app: mini-hellidon-se
+spec:
+  type: ClusterIP
+  selector:
+    app: mini-hellidon-se
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mini-hellidon-se
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mini-hellidon-se
+  template:
+    metadata:
+      labels:
+        app: mini-hellidon-se
+        version: v1
+    spec:
+      containers:
+      - name: mini-hellidon-se
+        image: mini-hellidon-se
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
